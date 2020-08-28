@@ -47,26 +47,31 @@ function Pizza () {
   this.toppings = [];
   this.cost = 0;
 }
+function Pizza (size, toppings) {
+  this.size = size;
+  this.toppings = toppings;
+  this.calculateCost();
+}
 Pizza.prototype.calculateCost = function () {
   switch (this.size) {
     case 'personal':
-      this.cost += 4;
+      this.cost = 4;
       break;
 
     case 'small':
-      this.cost += 8;
+      this.cost = 8;
       break;
 
     case 'medium':
-      this.cost += 10;
+      this.cost = 10;
       break;
 
     case 'large':
-    this.cost += 12;
+    this.cost = 12;
     break;
 
     case 'x-large':
-    this.cost += 15;
+    this.cost = 15;
     break;
 
     default:
@@ -148,16 +153,22 @@ function writeToppingsForm (formDom, toppings) {
   }
   formDom.append(html);
 }
-function checkIfFormSelected(formDom) {
-  alert($('input:checked','#pizzaSizeForm').length);
-  $('input[name=toppings]:checked').each(function () {
-    alert(this.value);
-  })
+function checkIfFormSelected(formID) {
+  if($('input:checked',formID).length > 0){
+    return true;
+  } else {
+    return false;
+  }
+  // alert($('input:checked','#pizzaSizeForm').length);
+  // $('input[name=toppings]:checked').each(function () {
+  //   alert(this.value);
+  // })
   
-  alert($('input:checked','#pizzaSizeForm').val());
+  // alert($('input:checked','#pizzaSizeForm').val());
 }
 $(document).ready(function () {
   let STORE = new Store();
+  let CURRENTORDER = new Order();
   writeToppingsToList($('#toppingsList'), STORE.toppings);
   writeSizeCostsToList ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts);
 
@@ -171,7 +182,35 @@ $(document).ready(function () {
   });
 
   $('#addPizzaButton').click(function () {
-    checkIfFormSelected(2)
+    if(checkIfFormSelected('#pizzaSizeForm')) {
+      let toppings = [];
+      let size = $('input:checked','#pizzaSizeForm').val();
+      $('input[name=toppings]:checked').each(function () {
+        toppings.push(this.value);
+      });
+      CURRENTORDER.addItem(new Pizza(size, toppings));
+      updateOrderCard(CURRENTORDER);
+    }
   });
 
 });
+
+
+function updateOrderCard(order) {
+  let html = '';
+  order.items.forEach(element => {
+    if(element.toppings.length > 0) {
+      html += '<li>' + element.size + ' pizza with:<ul>'
+      element.toppings.forEach(e => {
+        html += '<li>' + e + '</li>'
+      });
+      html += '</ul>'
+    }
+    else {
+      html += '<li>' + element.size + ' pizza'
+    }
+    
+  });
+  $('#itemsList').html(html);
+
+}
