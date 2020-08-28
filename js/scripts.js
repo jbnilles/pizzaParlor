@@ -145,20 +145,20 @@ Drink.prototype.getCost = function () {
 function writeToppingsToList (listDom, arry) {
   listDom.text('');
   arry.forEach(element => {
-    listDom.append('<li>' + element.replace('_', ' ') + '</li>');
+    listDom.append('<li> ' + element.replace('_', ' ') + '</li>');
   });
 }
 function writeSizeCostsToList (listDom, sizes, costs) {
   listDom.text('');
   for (let i = 0; i < sizes.length; i++) {
-    listDom.append('<li>' + sizes[i] + ':  $' + costs[i] +'</li>');
+    listDom.append('<li> ' + sizes[i] + ':  $' + costs[i] +'</li>');
     
   }
 }
 function writeToSizeForm (formDom,sizes,name) {
   formDom.text('');
   for (let i = 0; i < sizes.length; i++) {
-    formDom.append('<input type="radio" name=' + name +' id=' + sizes[i] + ' value=' + sizes[i] + '><label for=' + sizes[i] + '>' + sizes[i].replace('_', ' ') +'</label><br>');
+    formDom.append('<input type="radio" name=' + name +' id=' + sizes[i] + ' value=' + sizes[i] + '><label for=' + sizes[i] + '> ' + sizes[i].replace('_', ' ') +'</label><br>');
   }
 }
 function writeToppingsForm (formDom, toppings) {
@@ -221,8 +221,10 @@ function writeToPastOrders (store,listDom) {
 $(document).ready(function () {
   let STORE = new Store();
   let CURRENTORDER = new Order();
+  writeToppingsToList($('#drinkList'), STORE.drinkFlavors);
   writeToppingsToList($('#toppingsList'), STORE.toppings);
   writeSizeCostsToList ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts);
+  writeSizeCostsToList ($('#drinkSize'), STORE.drinkSizes, STORE.drinkCosts);
 
   $('#startOrderButton').click(function () {
     CURRENTORDER = new Order();

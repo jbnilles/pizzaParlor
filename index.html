@@ -21,11 +21,15 @@
         <div class="col-6">
           <div class="card">
             <div class="card-header">
-              <h4>Order</h4>
+              <h4>Menu</h4>
             </div>
             <div class="card-body">
+              <h5><u>Pizza</u></h5>
               <h6>These are the toppings that we offer!</h6>
               <ul id="toppingsList"></ul>
+              <hr>
+              <h5><u>Drinks</u></h5>
+              <ul id="drinkList"></ul>
             </div>
           </div>
         </div>
@@ -35,9 +39,12 @@
               <h4>Pricing</h4>
             </div>
             <div class="card-body">
-              
+              <h5><u>Pizza Size</u></h5>
               <ul id="pricingList"></ul>
               <p>The first two toppings are free and then it is $1 per topping after.</p>
+              <hr>
+              <h5><u>Drink Size</u></h5>
+              <ul id="drinkSize"></ul>
             </div>
           </div>
         </div>
@@ -51,8 +58,10 @@
               <h4>Add a pizza to your order</h4>
             </div>
             <div class="card-body">
+              <h5><u>Size</u></h5>
               <form id="pizzaSizeForm"></form>
               <hr>
+              <h5><u>Toppings</u></h5>
               <form id="toppingsForm"></form>
               <button id="addPizzaButton" class="btn btn-outline-dark">Add Pizza</button>
             </div>
@@ -86,8 +95,10 @@
               <h4>Add drinks to your order</h4>
             </div>
             <div class="card-body">
+              <h5><u>Flavors</u></h5>
               <form id="drinkFlavorForm"></form>
               <hr>
+              <h5><u>Size</u></h5>
               <form id="drinkSizeForm"></form>
               <button id="addDrinkButton" class="btn btn-outline-dark">Add Drink</button>
             </div>
