@@ -1,7 +1,7 @@
 function Store () {
   this.previousOrders = [];
-  this.toppings = ['peparoni', 'bacon', 'extra cheese', 'mushrooms', 'onions', 'olive', 'pineapple'];
-  this.drinkFlavors = ['coke','diet coke', 'rootbeer', 'lemonade'];
+  this.toppings = ['peparoni', 'bacon', 'mushrooms', 'onions', 'olive', 'pineapple', 'extra_cheese'];
+  this.drinkFlavors = ['coke','diet_coke', 'rootbeer', 'lemonade'];
   this.pizzaSizes = ['personal', 'small', 'medium', 'large', 'x-large'];
   this.pizzaCosts = [4, 8, 10, 12, 15];
   this.drinkSizes = ['small', 'medium', 'large'];
@@ -12,12 +12,15 @@ function Store () {
 
 function Order () {
   this.items = [];
+  this.drinks = [];
   this.name = '';
-  this.subtotal;
-  this.total;
+  this.subtotal = 0;
+  this.tax = 0
+  this.total = 0;
 }
 function Order (name) {
   this.items = [];
+  this.drinks = [];
   this.name = name;
   this.subtotal = 0;
   this.tax = 0
@@ -28,19 +31,29 @@ Order.prototype.addItem = function (item) {
   this.subtotal += item.cost;
   return this.subtotal;
 }
-Order.prototype.calculateTotal = function () {
-this.tax = this.subtotal * .09;
-this.total = this.subtotal += this.tax;
-return this.total;
-}
-Order.prototype.getTax = function () {
-  return this.tax;
-}
-Order.prototype.getSubtotal = function () {
+Order.prototype.addDrink = function (drink) {
+  this.drinks.push(drink);
+  this.subtotal += drink.cost;
   return this.subtotal;
 }
+Order.prototype.calculateTotal = function () {
+this.tax = this.subtotal * .09;
+this.total = this.subtotal + this.tax;
+return this.total;
+}
+Order.prototype.resetTotals = function () {
+  this.subtotal = 0;
+  this.tax = 0
+  this.total = 0;
+}
+Order.prototype.getTax = function () {
+  return this.tax.toFixed(2);
+}
+Order.prototype.getSubtotal = function () {
+  return this.subtotal.toFixed(2);
+}
 Order.prototype.getTotal = function () {
-  return this.total;
+  return this.total.toFixed(2);
 }
 function Pizza () {
   this.size;
@@ -97,6 +110,11 @@ function Drink () {
   this.cost = 0;
 
 }
+function Drink(size, flavor) {
+  this.size = size;
+  this.flavor = flavor;
+  this.calculateCost(); 
+}
 Drink.prototype.setSize = function (size) {
   this.size = size;
 }
@@ -113,7 +131,7 @@ Drink.prototype.calculateCost = function () {
       this.cost = 1.50
       break;
 
-    case 'small':
+    case 'large':
       this.cost = 2
       break;
 
@@ -128,7 +146,7 @@ Drink.prototype.getCost = function () {
 function writeToppingsToList (listDom, arry) {
   listDom.text('');
   arry.forEach(element => {
-    listDom.append('<li>' + element + '</li>');
+    listDom.append('<li>' + element.replace('_', ' ') + '</li>');
   });
 }
 function writeSizeCostsToList (listDom, sizes, costs) {
@@ -141,7 +159,7 @@ function writeSizeCostsToList (listDom, sizes, costs) {
 function writeToSizeForm (formDom,sizes,name) {
   formDom.text('');
   for (let i = 0; i < sizes.length; i++) {
-    formDom.append('<input type="radio" name=' + name +' "pizzaSize" id=' + sizes[i] + ' value=' + sizes[i] + '><label for=' + sizes[i] + '>' + sizes[i] +'</label><br>');
+    formDom.append('<input type="radio" name=' + name +' id=' + sizes[i] + ' value=' + sizes[i] + '><label for=' + sizes[i] + '>' + sizes[i].replace('_', ' ') +'</label><br>');
   }
 }
 function writeToppingsForm (formDom, toppings) {
@@ -149,7 +167,7 @@ function writeToppingsForm (formDom, toppings) {
   let html = '';
   for (let i = 0; i < toppings.length; i++) {
     html+= "<input name='toppings' type='checkbox' id=" + toppings[i] + " value="+ toppings[i] + '>';
-    html+= "<label for=" + toppings[i] + ">" + toppings[i] + "</label><br>"
+    html+= "<label for=" + toppings[i] + ">" + toppings[i].replace('_', ' ') + "</label><br>"
   }
   formDom.append(html);
 }
@@ -193,24 +211,49 @@ $(document).ready(function () {
     }
   });
 
+  $('#addDrinkButton').click(function () {
+    
+
+    if(checkIfFormSelected('#drinkFlavorForm') && checkIfFormSelected('#drinkSizeForm')) {
+      let flavor = $('input:checked','#drinkFlavorForm').val();
+      let size = $('input:checked','#drinkSizeForm').val();
+      
+      CURRENTORDER.addDrink(new Drink(size, flavor));
+      updateOrderCard(CURRENTORDER);
+      
+    }
+  });
+
 });
 
 
 function updateOrderCard(order) {
   let html = '';
+  order.resetTotals();
   order.items.forEach(element => {
     if(element.toppings.length > 0) {
       html += '<li>' + element.size + ' pizza with:<ul>'
       element.toppings.forEach(e => {
-        html += '<li>' + e + '</li>'
+        html += '<li>' + e.replace('_', ' ') + '</li>'
       });
       html += '</ul>'
     }
     else {
-      html += '<li>' + element.size + ' pizza'
+      html += '<li>' + element.size + 'cheese pizza'
     }
-    
+    order.subtotal += element.cost;
   });
   $('#itemsList').html(html);
-
+  html ='';
+  order.drinks.forEach(element => {
+   html += '<li>' + element.size + ' ' + element.flavor.replace('_', ' ') + '</li>';
+   order.subtotal += element.cost;
+  });
+  order.calculateTotal();
+  $('#drinkList').html(html);
+  $('#subtotal').text(order.getSubtotal());
+  $('#tax').text(order.getTax());
+  $('#total').text(order.getTotal());
+  
+  
 }
