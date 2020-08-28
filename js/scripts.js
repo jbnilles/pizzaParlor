@@ -86,6 +86,9 @@ Pizza.prototype.addTopping = function (topping) {
 Pizza.prototype.setSize = function (size) {
   this.size = size;
 }
+Pizza.prototype.getSize = function() {
+  return this.size;
+}
 Pizza.prototype.getCost = function () {
   return this.cost;
 }
@@ -97,8 +100,14 @@ function Drink(size, flavor) {
 Drink.prototype.setSize = function (size) {
   this.size = size;
 }
+Drink.prototype.getSize = function () {
+  return this.size;
+}
 Drink.prototype.setFlavor = function (flavor) {
   this.flavor = flavor;
+}
+Drink.prototype.getFlavor = function () {
+  return this.flavor;
 }
 Drink.prototype.calculateCost = function () {
   switch (this.size) {
@@ -193,7 +202,7 @@ function updateOrderCard(order, pizzaList, drinkList) {
 function writeToPastOrders (store,listDom) {
   let html = '';
   for (let i = store.previousOrders.length - 1; i >= 0 ; i--) {
-    html += '<li id=' + i + '>' + store.previousOrders[i].date + ' : $ ' + store.previousOrders[i].total.toFixed(2) + " Pizza's: " + store.previousOrders[i].items.length + " Drinks: " + store.previousOrders[i].drinks.length + '</li>';
+    html += '<li id=' + i + '>' + store.previousOrders[i].date + ' : $' + store.previousOrders[i].total.toFixed(2) + " Pizza's: " + store.previousOrders[i].items.length + " Drinks: " + store.previousOrders[i].drinks.length + '</li>';
   }
   $(listDom).html(html);
 }
