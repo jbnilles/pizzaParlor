@@ -15,6 +15,7 @@ function Order () {
   this.subtotal = 0;
   this.tax = 0
   this.total = 0;
+  this.date;
 }
 function Order (name) {
   this.items = [];
@@ -23,6 +24,7 @@ function Order (name) {
   this.subtotal = 0;
   this.tax = 0
   this.total = 0;
+  this.date;
 }
 Order.prototype.addItem = function (item) {
   this.items.push(item);
@@ -181,6 +183,41 @@ function checkIfFormSelected(formID) {
   
   // alert($('input:checked','#pizzaSizeForm').val());
 }
+function updateOrderCard(order, pizzaList, drinkList) {
+  let html = '';
+  order.resetTotals();
+  order.items.forEach(element => {
+    if(element.toppings.length > 0) {
+      html += '<li>' + element.size + ' pizza : $' + element.cost + '<ul>'
+      element.toppings.forEach(e => {
+        html += '<li>' + e.replace('_', ' ') + '</li>'
+      });
+      html += '</ul>'
+    }
+    else {
+      html += '<li>' + element.size + ' cheese pizza : $' + element.cost 
+    }
+    order.subtotal += element.cost;
+  });
+  $(pizzaList).html(html);
+  html ='';
+  order.drinks.forEach(element => {
+   html += '<li>' + element.size + ' ' + element.flavor.replace('_', ' ') + ' : $' + element.cost + '</li>';
+   order.subtotal += element.cost;
+  });
+  order.calculateTotal();
+  $(drinkList).html(html);
+  $('.subtotal').text(order.getSubtotal());
+  $('.tax').text(order.getTax());
+  $('.total').text(order.getTotal());  
+}
+function writeToPastOrders (store,listDom) {
+  let html = '';
+  for (let i = 0; i < store.previousOrders.length; i++) {
+    html += '<li id=' + i + '>' + store.previousOrders[i].date + ' : $ ' + store.previousOrders[i].total + " Pizza's: " + store.previousOrders[i].items.length + " Drinks: " + store.previousOrders[i].drinks.length + '</li>';
+  }
+  $(listDom).html(html);
+}
 $(document).ready(function () {
   let STORE = new Store();
   let CURRENTORDER = new Order();
@@ -188,12 +225,16 @@ $(document).ready(function () {
   writeSizeCostsToList ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts);
 
   $('#startOrderButton').click(function () {
+    CURRENTORDER = new Order();
     $('#landingPage').hide();
     $('#orderPage').show();
+    $('#homeButton').show();
+    $(this).hide();
     writeToSizeForm($('#pizzaSizeForm'),STORE.pizzaSizes, 'pizzaSizes');
     writeToppingsForm ($('#toppingsForm'), STORE.toppings);
     writeToSizeForm($('#drinkSizeForm'),STORE.drinkSizes, 'drinkSizes');
     writeToSizeForm($('#drinkFlavorForm'),STORE.drinkFlavors, 'drinkFlavors');
+    updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
   });
 
   $('#addPizzaButton').click(function () {
@@ -221,12 +262,15 @@ $(document).ready(function () {
   
   $('#buyButton').click(function () {
     if(CURRENTORDER.subtotal > 0) {
+      let d =new Date();
+      CURRENTORDER.date = (d.getMonth() + 1).toString()  +'/' +(d.getDate()).toString();  
       STORE.previousOrders.push(CURRENTORDER);
       CURRENTORDER = new Order();
       updateOrderCard(CURRENTORDER,$('#itemsList'), $('#drinkList'));
       $('#orderPage').hide();
       updateOrderCard(STORE.previousOrders[STORE.previousOrders.length - 1],$('#pizzaReceiptList'), $('#drinkReceiptList'));
       $('#receiptPage').show();
+      writeToPastOrders (STORE,$('#pastOrdersList'));
     }
   });
   $('#clearOrderButton').click(function () {
@@ -234,36 +278,13 @@ $(document).ready(function () {
     updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
     
   });
+  $('#homeButton').click(function () {
+    $(this).hide();
+    $('#startOrderButton').show();
+    $('#landingPage').show();
+    $('#orderPage').hide();
+    $('#receiptPage').hide();
+  });
 });
 
 
-function updateOrderCard(order, pizzaList, drinkList) {
-  let html = '';
-  order.resetTotals();
-  order.items.forEach(element => {
-    if(element.toppings.length > 0) {
-      html += '<li>' + element.size + ' pizza : $' + element.cost + '<ul>'
-      element.toppings.forEach(e => {
-        html += '<li>' + e.replace('_', ' ') + '</li>'
-      });
-      html += '</ul>'
-    }
-    else {
-      html += '<li>' + element.size + ' cheese pizza : $' + element.cost 
-    }
-    order.subtotal += element.cost;
-  });
-  $(pizzaList).html(html);
-  html ='';
-  order.drinks.forEach(element => {
-   html += '<li>' + element.size + ' ' + element.flavor.replace('_', ' ') + ' : $' + element.cost + '</li>';
-   order.subtotal += element.cost;
-  });
-  order.calculateTotal();
-  $(drinkList).html(html);
-  $('#subtotal').text(order.getSubtotal());
-  $('#tax').text(order.getTax());
-  $('#total').text(order.getTotal());
-  
-  
-}

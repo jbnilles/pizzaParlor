@@ -14,6 +14,7 @@
     <div class="jumbotron">
       <h2 class="display-4">My Pizza Place</h2>
       <button class="btn btn-outline-primary" id="startOrderButton">Start Order</button>
+      <button class="btn btn-outline-primary" id="homeButton">Home</button>
     </div>
     <div id="landingPage">
       <div class="row" >
@@ -69,9 +70,9 @@
               <h6>Drinks:</h6>
               <ul id="drinkList"></ul>
               <hr>
-              <h6>Subtotal: $<span id='subtotal'>0.00</span></h6>
-              <h6>Tax: $<span id='tax'>0.00</span></h6>
-              <h6>Total: $<span id='total'>0.00</span></h6>
+              <h6>Subtotal: $<span class='subtotal'>0.00</span></h6>
+              <h6>Tax: $<span class='tax'>0.00</span></h6>
+              <h6>Total: $<span class='total'>0.00</span></h6>
               <button class="btn btn-outline-primary" id="buyButton">Buy</button>
               <button class="btn btn-outline-primary" id="clearOrderButton">Clear Order</button>
             </div>
@@ -99,7 +100,7 @@
             </div>
             <div class="card-body">
               
-              <ul id="items"></ul>
+              <ul id="pastOrdersList"></ul>
               
             </div>
           </div>
@@ -113,14 +114,14 @@
         </div>
         <div class="card-body">
           <h6>Pizza's:</h6>
-          <ul id="itemsReceiptList"></ul>
+          <ul id="pizzaReceiptList"></ul>
           <hr>
           <h6>Drinks:</h6>
           <ul id="drinkReceiptList"></ul>
           <hr>
-          <h6>Subtotal: $<span id='subtotal'>0.00</span></h6>
-          <h6>Tax: $<span id='tax'>0.00</span></h6>
-          <h6>Total: $<span id='total'>0.00</span></h6>
+          <h6>Subtotal: $<span class='subtotal'>0.00</span></h6>
+          <h6>Tax: $<span class='tax'>0.00</span></h6>
+          <h6>Total: $<span class='total'>0.00</span></h6>
         </div>
       </div>
     </div>
