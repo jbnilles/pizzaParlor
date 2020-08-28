@@ -17,3 +17,20 @@
 label{
   margin-left: 7px;
 }
+body{
+  background-color: #fef2a0;
+}
+.jumbotron{
+  text-align: center;
+  background-color: #e98b50;
+}
+.card{
+  background-color: #f3cd97;
+  padding: 15px;
+  margin-top: 25px;
+}
+.container{
+  background-color: #e98b50;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}

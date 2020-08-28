@@ -1,7 +1,7 @@
 function Store () {
   this.previousOrders = [];
-  this.toppings = ['peparoni', 'bacon', 'mushrooms', 'onions', 'olive', 'pineapple', 'extra_cheese'];
-  this.drinkFlavors = ['coke','diet_coke', 'rootbeer', 'lemonade'];
+  this.toppings = ['peparoni', 'bacon', 'mushrooms', 'onions', 'olive', 'pineapple', 'extra_cheese','sausage'];
+  this.drinkFlavors = ['coke','diet_coke', 'rootbeer', 'lemonade', 'dr._pepper','sprite'];
   this.pizzaSizes = ['personal', 'small', 'medium', 'large', 'x-large'];
   this.pizzaCosts = [4, 8, 10, 12, 15];
   this.drinkSizes = ['small', 'medium', 'large'];
@@ -151,7 +151,7 @@ function writeToppingsToList (listDom, arry) {
 function writeSizeCostsToList (listDom, sizes, costs) {
   listDom.text('');
   for (let i = 0; i < sizes.length; i++) {
-    listDom.append('<li> ' + sizes[i] + ':  $' + costs[i] +'</li>');
+    listDom.append('<li> ' + sizes[i] + ':  $' + costs[i].toFixed(2) +'</li>');
     
   }
 }
@@ -188,21 +188,21 @@ function updateOrderCard(order, pizzaList, drinkList) {
   order.resetTotals();
   order.items.forEach(element => {
     if(element.toppings.length > 0) {
-      html += '<li>' + element.size + ' pizza : $' + element.cost + '<ul>'
+      html += '<li>' + element.size + ' pizza : $' + element.cost.toFixed(2) + '<ul>'
       element.toppings.forEach(e => {
         html += '<li>' + e.replace('_', ' ') + '</li>'
       });
       html += '</ul>'
     }
     else {
-      html += '<li>' + element.size + ' cheese pizza : $' + element.cost 
+      html += '<li>' + element.size + ' cheese pizza : $' + element.cost.toFixed(2) 
     }
     order.subtotal += element.cost;
   });
   $(pizzaList).html(html);
   html ='';
   order.drinks.forEach(element => {
-   html += '<li>' + element.size + ' ' + element.flavor.replace('_', ' ') + ' : $' + element.cost + '</li>';
+   html += '<li>' + element.size + ' ' + element.flavor.replace('_', ' ') + ' : $' + element.cost.toFixed(2) + '</li>';
    order.subtotal += element.cost;
   });
   order.calculateTotal();
@@ -221,10 +221,10 @@ function writeToPastOrders (store,listDom) {
 $(document).ready(function () {
   let STORE = new Store();
   let CURRENTORDER = new Order();
-  writeToppingsToList($('#drinkList'), STORE.drinkFlavors);
+  writeToppingsToList($('#drinkMenu'), STORE.drinkFlavors);
   writeToppingsToList($('#toppingsList'), STORE.toppings);
   writeSizeCostsToList ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts);
-  writeSizeCostsToList ($('#drinkSize'), STORE.drinkSizes, STORE.drinkCosts);
+  writeSizeCostsToList ($('#drinkSizeList'), STORE.drinkSizes, STORE.drinkCosts);
 
   $('#startOrderButton').click(function () {
     CURRENTORDER = new Order();

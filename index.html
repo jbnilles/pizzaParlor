@@ -13,8 +13,8 @@
   <div class="container">
     <div class="jumbotron">
       <h2 class="display-4">My Pizza Place</h2>
-      <button class="btn btn-outline-primary" id="startOrderButton">Start Order</button>
-      <button class="btn btn-outline-primary" id="homeButton">Home</button>
+      <button class="btn btn-dark" id="startOrderButton">Start Order</button>
+      <button class="btn btn-dark" id="homeButton">Home</button>
     </div>
     <div id="landingPage">
       <div class="row" >
@@ -29,7 +29,7 @@
               <ul id="toppingsList"></ul>
               <hr>
               <h5><u>Drinks</u></h5>
-              <ul id="drinkList"></ul>
+              <ul id="drinkMenu"></ul>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@
               <p>The first two toppings are free and then it is $1 per topping after.</p>
               <hr>
               <h5><u>Drink Size</u></h5>
-              <ul id="drinkSize"></ul>
+              <ul id="drinkSizeList"></ul>
             </div>
           </div>
         </div>
@@ -63,7 +63,7 @@
               <hr>
               <h5><u>Toppings</u></h5>
               <form id="toppingsForm"></form>
-              <button id="addPizzaButton" class="btn btn-outline-dark">Add Pizza</button>
+              <button id="addPizzaButton" class="btn btn-dark">Add Pizza</button>
             </div>
           </div>
         </div>
@@ -82,8 +82,8 @@
               <h6>Subtotal: $<span class='subtotal'>0.00</span></h6>
               <h6>Tax: $<span class='tax'>0.00</span></h6>
               <h6>Total: $<span class='total'>0.00</span></h6>
-              <button class="btn btn-outline-primary" id="buyButton">Buy</button>
-              <button class="btn btn-outline-primary" id="clearOrderButton">Clear Order</button>
+              <button class="btn btn-dark" id="buyButton">Buy</button>
+              <button class="btn btn-dark" id="clearOrderButton">Clear Order</button>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@
               <hr>
               <h5><u>Size</u></h5>
               <form id="drinkSizeForm"></form>
-              <button id="addDrinkButton" class="btn btn-outline-dark">Add Drink</button>
+              <button id="addDrinkButton" class="btn btn-dark">Add Drink</button>
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@
               <h4>Past Orders</h4>
             </div>
             <div class="card-body">
-              
+              <h6><u>Click on past order to order it again.</u></h6>
               <ul id="pastOrdersList"></ul>
               
             </div>
