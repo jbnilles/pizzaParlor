@@ -1,47 +1,44 @@
-# _{Application Name}_
+# _pizzaParlor_
 
-#### _{Brief description of application}, 8/21/20_
+#### _Created for week 4 friday code review in Epicodus, 8/28/20_
 
 #### By _**Joseph Nilles**_
 
 ## Description
 
-_{This is a detailed description of your application. Its purpose and usage.  Give as much detail as needed to explain what the application does, and any other information you want users or other developers to have. }_
+_This program is a website for a pizza shop where it allows the user to navigate through a menu and an order page where it allows the user to make a pizza and drink order for any amount of drinks and pizzas. Once the user makes an order that order is saved and can be repurchesed by clicking on the past order in the order screen._
 
 ### Specs
 | Spec | Input | Output |
 | :-------------     | :------------- | :------------- |
-| **add the value of all the symbols** | 66 |LXVI |
-| **there may not be more than three of the same characters in a row. Instead, you switch to subtraction.** | 90 | XC |
-| **separate ones, tens, hundreds, and thousands**| 99 | XCIX |
-| **check user input for proper entry**| 2.5 | return error |
+| **get the starting cost of the pizza based on its size** | 'large' | 12 |
+| **add a dollar per topping after the second topping** | 5 toppings | 3 |
+| **multiply subtotal by the tax rate of 9% to get tax value**| 15 | 1.35 |
+| **add all previous values together**| large 5 topping pizza | 16.35 |
+| 
 
 
 
 ## Setup/Installation Requirements
 
-* _This is a great place_
-* _to list setup instructions_
-* _in a simple_
-* _easy-to-understand_
-* _format_
+* _clone this repository_
+* _run index.html in a browser_
 
-_{Leave nothing to chance! You want it to be easy for potential users, employers and collaborators to run your app. Do I need to run a server? How should I set up my databases? Is there other code this app depends on?}_
 
 ## Known Bugs
 
-_{Are there issues that have not yet been resolved that you want to let users know you know?  Outline any issues that would impact use of your application.  Share any workarounds that are in place. }_
+_There are currently no known bugs_
 
 ## Support and contact details
 
-_{Let people know what to do if they run into any issues or have questions, ideas or concerns.  Encourage them to contact you or make a contribution to the code.}_
+_contact the author Joseph Nilles at jbnilles24@gmail.com_
 
 ## Technologies Used
 
-_{Tell me about the languages and tools you used to create this app. Assume that I know you probably used HTML and CSS. If you did something really cool using only HTML, point that out.}_
+_This program was created with HTML, CSS, Boostrap, JavaScript, and jQuery_
 
 ### License
 
 *This software is available with an MIT license*
 
-Copyright (c) 2016 **_{List of contributors or company name}_**
+Copyright (c) 2020 **_Joseph Nilles_**
