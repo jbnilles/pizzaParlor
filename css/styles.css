@@ -8,3 +8,9 @@
 #homeButton {
   display: none;
 }
+#pastOrdersList{
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+
+}

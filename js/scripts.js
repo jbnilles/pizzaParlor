@@ -213,8 +213,8 @@ function updateOrderCard(order, pizzaList, drinkList) {
 }
 function writeToPastOrders (store,listDom) {
   let html = '';
-  for (let i = 0; i < store.previousOrders.length; i++) {
-    html += '<li id=' + i + '>' + store.previousOrders[i].date + ' : $ ' + store.previousOrders[i].total + " Pizza's: " + store.previousOrders[i].items.length + " Drinks: " + store.previousOrders[i].drinks.length + '</li>';
+  for (let i = store.previousOrders.length - 1; i >= 0 ; i--) {
+    html += '<li id=' + i + '>' + store.previousOrders[i].date + ' : $ ' + store.previousOrders[i].total.toFixed(2) + " Pizza's: " + store.previousOrders[i].items.length + " Drinks: " + store.previousOrders[i].drinks.length + '</li>';
   }
   $(listDom).html(html);
 }
@@ -236,7 +236,6 @@ $(document).ready(function () {
     writeToSizeForm($('#drinkFlavorForm'),STORE.drinkFlavors, 'drinkFlavors');
     updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
   });
-
   $('#addPizzaButton').click(function () {
     if(checkIfFormSelected('#pizzaSizeForm')) {
       let toppings = [];
@@ -248,7 +247,6 @@ $(document).ready(function () {
       updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
     }
   });
-
   $('#addDrinkButton').click(function () {
     if(checkIfFormSelected('#drinkFlavorForm') && checkIfFormSelected('#drinkSizeForm')) {
       let flavor = $('input:checked','#drinkFlavorForm').val();
@@ -259,7 +257,6 @@ $(document).ready(function () {
       
     }
   });
-  
   $('#buyButton').click(function () {
     if(CURRENTORDER.subtotal > 0) {
       let d =new Date();
@@ -284,6 +281,18 @@ $(document).ready(function () {
     $('#landingPage').show();
     $('#orderPage').hide();
     $('#receiptPage').hide();
+  });
+  $('#pastOrdersList').on('click', 'li', function () {
+    let previousOrder = STORE.previousOrders[$(this).attr('id')];
+    let newCurrentOreder = new Order();
+    previousOrder.items.forEach(element => {
+      newCurrentOreder.items.push(element);
+    });
+    previousOrder.drinks.forEach(element => {
+      newCurrentOreder.drinks.push(element);
+    });
+    CURRENTORDER = newCurrentOreder;
+    updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
   });
 });
 
