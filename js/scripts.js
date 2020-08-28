@@ -11,16 +11,6 @@ function Store () {
 function Order () {
   this.items = [];
   this.drinks = [];
-  this.name = '';
-  this.subtotal = 0;
-  this.tax = 0
-  this.total = 0;
-  this.date;
-}
-function Order (name) {
-  this.items = [];
-  this.drinks = [];
-  this.name = name;
   this.subtotal = 0;
   this.tax = 0
   this.total = 0;
@@ -54,11 +44,6 @@ Order.prototype.getSubtotal = function () {
 }
 Order.prototype.getTotal = function () {
   return this.total.toFixed(2);
-}
-function Pizza () {
-  this.size;
-  this.toppings = [];
-  this.cost = 0;
 }
 function Pizza (size, toppings) {
   this.size = size;
@@ -104,12 +89,6 @@ Pizza.prototype.setSize = function (size) {
 Pizza.prototype.getCost = function () {
   return this.cost;
 }
-function Drink () {
-  this.size;
-  this.flavor;
-  this.cost = 0;
-
-}
 function Drink(size, flavor) {
   this.size = size;
   this.flavor = flavor;
@@ -142,26 +121,26 @@ Drink.prototype.calculateCost = function () {
 Drink.prototype.getCost = function () {
   return this.cost;
 }
-function writeToppingsToList (listDom, arry) {
+function writeSimpleListToDom (listDom, arry) {
   listDom.text('');
   arry.forEach(element => {
     listDom.append('<li> ' + element.replace('_', ' ') + '</li>');
   });
 }
-function writeSizeCostsToList (listDom, sizes, costs) {
+function writeSizeCostsToDom (listDom, sizes, costs) {
   listDom.text('');
   for (let i = 0; i < sizes.length; i++) {
     listDom.append('<li> ' + sizes[i] + ':  $' + costs[i].toFixed(2) +'</li>');
     
   }
 }
-function writeToSizeForm (formDom,sizes,name) {
+function writeSizeToRadioForm (formDom,sizes,name) {
   formDom.text('');
   for (let i = 0; i < sizes.length; i++) {
     formDom.append('<input type="radio" name=' + name +' id=' + sizes[i] + ' value=' + sizes[i] + '><label for=' + sizes[i] + '> ' + sizes[i].replace('_', ' ') +'</label><br>');
   }
 }
-function writeToppingsForm (formDom, toppings) {
+function writeToppingsToChecklistForm (formDom, toppings) {
   formDom.text('');
   let html = '';
   for (let i = 0; i < toppings.length; i++) {
@@ -170,7 +149,7 @@ function writeToppingsForm (formDom, toppings) {
   }
   formDom.append(html);
 }
-function checkIfFormSelected(formID) {
+function checkIfRadioSelected(formID) {
   if($('input:checked',formID).length > 0){
     return true;
   } else {
@@ -221,10 +200,10 @@ function writeToPastOrders (store,listDom) {
 $(document).ready(function () {
   let STORE = new Store();
   let CURRENTORDER = new Order();
-  writeToppingsToList($('#drinkMenu'), STORE.drinkFlavors);
-  writeToppingsToList($('#toppingsList'), STORE.toppings);
-  writeSizeCostsToList ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts);
-  writeSizeCostsToList ($('#drinkSizeList'), STORE.drinkSizes, STORE.drinkCosts);
+  writeSimpleListToDom($('#drinkMenu'), STORE.drinkFlavors);
+  writeSimpleListToDom($('#toppingsList'), STORE.toppings);
+  writeSizeCostsToDom ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts);
+  writeSizeCostsToDom ($('#drinkSizeList'), STORE.drinkSizes, STORE.drinkCosts);
 
   $('#startOrderButton').click(function () {
     CURRENTORDER = new Order();
@@ -232,14 +211,14 @@ $(document).ready(function () {
     $('#orderPage').show();
     $('#homeButton').show();
     $(this).hide();
-    writeToSizeForm($('#pizzaSizeForm'),STORE.pizzaSizes, 'pizzaSizes');
-    writeToppingsForm ($('#toppingsForm'), STORE.toppings);
-    writeToSizeForm($('#drinkSizeForm'),STORE.drinkSizes, 'drinkSizes');
-    writeToSizeForm($('#drinkFlavorForm'),STORE.drinkFlavors, 'drinkFlavors');
+    writeSizeToRadioForm($('#pizzaSizeForm'),STORE.pizzaSizes, 'pizzaSizes');
+    writeToppingsToChecklistForm ($('#toppingsForm'), STORE.toppings);
+    writeSizeToRadioForm($('#drinkSizeForm'),STORE.drinkSizes, 'drinkSizes');
+    writeSizeToRadioForm($('#drinkFlavorForm'),STORE.drinkFlavors, 'drinkFlavors');
     updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
   });
   $('#addPizzaButton').click(function () {
-    if(checkIfFormSelected('#pizzaSizeForm')) {
+    if(checkIfRadioSelected('#pizzaSizeForm')) {
       let toppings = [];
       let size = $('input:checked','#pizzaSizeForm').val();
       $('input[name=toppings]:checked').each(function () {
@@ -250,13 +229,11 @@ $(document).ready(function () {
     }
   });
   $('#addDrinkButton').click(function () {
-    if(checkIfFormSelected('#drinkFlavorForm') && checkIfFormSelected('#drinkSizeForm')) {
+    if(checkIfRadioSelected('#drinkFlavorForm') && checkIfRadioSelected('#drinkSizeForm')) {
       let flavor = $('input:checked','#drinkFlavorForm').val();
       let size = $('input:checked','#drinkSizeForm').val();
-      
       CURRENTORDER.addDrink(new Drink(size, flavor));
       updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
-      
     }
   });
   $('#buyButton').click(function () {
@@ -275,7 +252,6 @@ $(document).ready(function () {
   $('#clearOrderButton').click(function () {
     CURRENTORDER = new Order();
     updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
-    
   });
   $('#homeButton').click(function () {
     $(this).hide();
