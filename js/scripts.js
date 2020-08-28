@@ -8,8 +8,6 @@ function Store () {
   this.drinkCosts = [1, 1.5, 2];
 
 }
-
-
 function Order () {
   this.items = [];
   this.drinks = [];
@@ -142,7 +140,6 @@ Drink.prototype.calculateCost = function () {
 Drink.prototype.getCost = function () {
   return this.cost;
 }
-
 function writeToppingsToList (listDom, arry) {
   listDom.text('');
   arry.forEach(element => {
@@ -207,50 +204,63 @@ $(document).ready(function () {
         toppings.push(this.value);
       });
       CURRENTORDER.addItem(new Pizza(size, toppings));
-      updateOrderCard(CURRENTORDER);
+      updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
     }
   });
 
   $('#addDrinkButton').click(function () {
-    
-
     if(checkIfFormSelected('#drinkFlavorForm') && checkIfFormSelected('#drinkSizeForm')) {
       let flavor = $('input:checked','#drinkFlavorForm').val();
       let size = $('input:checked','#drinkSizeForm').val();
       
       CURRENTORDER.addDrink(new Drink(size, flavor));
-      updateOrderCard(CURRENTORDER);
+      updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
       
     }
   });
-
+  
+  $('#buyButton').click(function () {
+    if(CURRENTORDER.subtotal > 0) {
+      STORE.previousOrders.push(CURRENTORDER);
+      CURRENTORDER = new Order();
+      updateOrderCard(CURRENTORDER,$('#itemsList'), $('#drinkList'));
+      $('#orderPage').hide();
+      updateOrderCard(STORE.previousOrders[STORE.previousOrders.length - 1],$('#pizzaReceiptList'), $('#drinkReceiptList'));
+      $('#receiptPage').show();
+    }
+  });
+  $('#clearOrderButton').click(function () {
+    CURRENTORDER = new Order();
+    updateOrderCard(CURRENTORDER, $('#itemsList'), $('#drinkList'));
+    
+  });
 });
 
 
-function updateOrderCard(order) {
+function updateOrderCard(order, pizzaList, drinkList) {
   let html = '';
   order.resetTotals();
   order.items.forEach(element => {
     if(element.toppings.length > 0) {
-      html += '<li>' + element.size + ' pizza with:<ul>'
+      html += '<li>' + element.size + ' pizza : $' + element.cost + '<ul>'
       element.toppings.forEach(e => {
         html += '<li>' + e.replace('_', ' ') + '</li>'
       });
       html += '</ul>'
     }
     else {
-      html += '<li>' + element.size + 'cheese pizza'
+      html += '<li>' + element.size + ' cheese pizza : $' + element.cost 
     }
     order.subtotal += element.cost;
   });
-  $('#itemsList').html(html);
+  $(pizzaList).html(html);
   html ='';
   order.drinks.forEach(element => {
-   html += '<li>' + element.size + ' ' + element.flavor.replace('_', ' ') + '</li>';
+   html += '<li>' + element.size + ' ' + element.flavor.replace('_', ' ') + ' : $' + element.cost + '</li>';
    order.subtotal += element.cost;
   });
   order.calculateTotal();
-  $('#drinkList').html(html);
+  $(drinkList).html(html);
   $('#subtotal').text(order.getSubtotal());
   $('#tax').text(order.getTax());
   $('#total').text(order.getTotal());
