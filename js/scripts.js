@@ -121,20 +121,34 @@ Drink.prototype.getCost = function () {
 }
 
 function writeToppingsToList (listDom, arry) {
+  listDom.text('');
   arry.forEach(element => {
     listDom.append('<li>' + element + '</li>');
   });
 }
 function writeSizeCostsToList (listDom, sizes, costs) {
+  listDom.text('');
   for (let i = 0; i < sizes.length; i++) {
     listDom.append('<li>' + sizes[i] + ':  $' + costs[i] +'</li>');
     
+  }
+}
+function writeToPizzaSizeForm (listDom,sizes, costs) {
+  listDom.text('');
+  for (let i = 0; i < sizes.length; i++) {
+    listDom.append('<input type="radio" name="pizzaSize" id=' + sizes[i] + ' value=' + sizes[i] + '><label for=' + sizes[i] + '>$' + costs[i] +': ' + sizes[i] +'</label>');
   }
 }
 
 $(document).ready(function () {
   let STORE = new Store();
   writeToppingsToList($('#toppingsList'), STORE.toppings);
-  writeSizeCostsToList ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts)
+  writeSizeCostsToList ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts);
+
+  $('#startOrderButton').click(function () {
+    $('#landingPage').hide();
+    $('#orderPage').show();
+    writeToPizzaSizeForm($('#pizzaSizeForm'),STORE.pizzaSizes, STORE.pizzaCosts);
+  });
 
 });
