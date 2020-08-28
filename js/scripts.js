@@ -1,24 +1,27 @@
-function store () {
-  let previousOrders = [];
-  let toppings = ['peparoni', 'bacon', 'extra cheese', 'mushrooms', 'onions', 'olive', 'pineapple'];
-  let drinkFlavors = ['coke','diet coke', 'rootbeer', 'lemonade'];
-  let pizzaSizes = ['personal', 'small', 'medium', 'large', 'x-large'];
-  let drinkSizes = ['small', 'medium', 'large'];
+function Store () {
+  this.previousOrders = [];
+  this.toppings = ['peparoni', 'bacon', 'extra cheese', 'mushrooms', 'onions', 'olive', 'pineapple'];
+  this.drinkFlavors = ['coke','diet coke', 'rootbeer', 'lemonade'];
+  this.pizzaSizes = ['personal', 'small', 'medium', 'large', 'x-large'];
+  this.pizzaCosts = [4, 8, 10, 12, 15];
+  this.drinkSizes = ['small', 'medium', 'large'];
+  this.drinkCosts = [1, 1.5, 2];
+
 }
 
 
 function Order () {
-  let items = [];
-  let name = '';
-  let subtotal;
-  let total;
+  this.items = [];
+  this.name = '';
+  this.subtotal;
+  this.total;
 }
 function Order (name) {
-  let items = [];
-  let name = name;
-  let subtotal = 0;
-  let tax = 0
-  let total = 0;
+  this.items = [];
+  this.name = name;
+  this.subtotal = 0;
+  this.tax = 0
+  this.total = 0;
 }
 Order.prototype.addItem = function (item) {
   this.items.push(item);
@@ -39,17 +42,15 @@ Order.prototype.getSubtotal = function () {
 Order.prototype.getTotal = function () {
   return this.total;
 }
-
 function Pizza () {
-  let size;
-  let toppings = [];
-  let cost = 0;
+  this.size;
+  this.toppings = [];
+  this.cost = 0;
 }
-
 Pizza.prototype.calculateCost = function () {
   switch (this.size) {
     case 'personal':
-      this.cost += 5;
+      this.cost += 4;
       break;
 
     case 'small':
@@ -85,12 +86,10 @@ Pizza.prototype.setSize = function (size) {
 Pizza.prototype.getCost = function () {
   return this.cost;
 }
-
-
 function Drink () {
-  let size;
-  let flavor;
-  let cost = 0;
+  this.size;
+  this.flavor;
+  this.cost = 0;
 
 }
 Drink.prototype.setSize = function (size) {
@@ -121,10 +120,21 @@ Drink.prototype.getCost = function () {
   return this.cost;
 }
 
+function writeToppingsToList (listDom, arry) {
+  arry.forEach(element => {
+    listDom.append('<li>' + element + '</li>');
+  });
+}
+function writeSizeCostsToList (listDom, sizes, costs) {
+  for (let i = 0; i < sizes.length; i++) {
+    listDom.append('<li>' + sizes[i] + ':  $' + costs[i] +'</li>');
+    
+  }
+}
 
-
-$().ready(function () {
-
-
+$(document).ready(function () {
+  let STORE = new Store();
+  writeToppingsToList($('#toppingsList'), STORE.toppings);
+  writeSizeCostsToList ($('#pricingList'), STORE.pizzaSizes, STORE.pizzaCosts)
 
 });
