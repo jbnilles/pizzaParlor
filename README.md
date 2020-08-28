@@ -24,6 +24,10 @@ _This program is a website for a pizza shop where it allows the user to navigate
 * _clone this repository_
 * _run index.html in a browser_
 
+## GitHub Pages Link
+
+ _https://jbnilles.github.io/pizzaParlor/_
+
 
 ## Known Bugs
 
