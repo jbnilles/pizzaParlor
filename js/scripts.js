@@ -143,14 +143,18 @@ function writeToppingsForm (formDom, toppings) {
   formDom.text('');
   let html = '';
   for (let i = 0; i < toppings.length; i++) {
-    html+= "<input type='checkbox' id=" + toppings[i] + " value="+ toppings[i] + '>';
+    html+= "<input name='toppings' type='checkbox' id=" + toppings[i] + " value="+ toppings[i] + '>';
     html+= "<label for=" + toppings[i] + ">" + toppings[i] + "</label><br>"
   }
   formDom.append(html);
 }
 function checkIfFormSelected(formDom) {
-  //alert($('input[name=pizzaSizes]:checked','#pizzaSizeForm').val());
-  alert($('input:checked','#toppingsForm').val());
+  alert($('input:checked','#pizzaSizeForm').length);
+  $('input[name=toppings]:checked').each(function () {
+    alert(this.value);
+  })
+  
+  alert($('input:checked','#pizzaSizeForm').val());
 }
 $(document).ready(function () {
   let STORE = new Store();
