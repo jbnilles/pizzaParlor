@@ -133,10 +133,10 @@ function writeSizeCostsToList (listDom, sizes, costs) {
     
   }
 }
-function writeToPizzaSizeForm (formDom,sizes) {
+function writeToSizeForm (formDom,sizes,name) {
   formDom.text('');
   for (let i = 0; i < sizes.length; i++) {
-    formDom.append('<input type="radio" name="pizzaSize" id=' + sizes[i] + ' value=' + sizes[i] + '><label for=' + sizes[i] + '>' + sizes[i] +'</label><br>');
+    formDom.append('<input type="radio" name=' + name +' "pizzaSize" id=' + sizes[i] + ' value=' + sizes[i] + '><label for=' + sizes[i] + '>' + sizes[i] +'</label><br>');
   }
 }
 function writeToppingsForm (formDom, toppings) {
@@ -148,7 +148,10 @@ function writeToppingsForm (formDom, toppings) {
   }
   formDom.append(html);
 }
-
+function checkIfFormSelected(formDom) {
+  //alert($('input[name=pizzaSizes]:checked','#pizzaSizeForm').val());
+  alert($('input:checked','#toppingsForm').val());
+}
 $(document).ready(function () {
   let STORE = new Store();
   writeToppingsToList($('#toppingsList'), STORE.toppings);
@@ -157,8 +160,14 @@ $(document).ready(function () {
   $('#startOrderButton').click(function () {
     $('#landingPage').hide();
     $('#orderPage').show();
-    writeToPizzaSizeForm($('#pizzaSizeForm'),STORE.pizzaSizes);
+    writeToSizeForm($('#pizzaSizeForm'),STORE.pizzaSizes, 'pizzaSizes');
     writeToppingsForm ($('#toppingsForm'), STORE.toppings);
+    writeToSizeForm($('#drinkSizeForm'),STORE.drinkSizes, 'drinkSizes');
+    writeToSizeForm($('#drinkFlavorForm'),STORE.drinkFlavors, 'drinkFlavors');
+  });
+
+  $('#addPizzaButton').click(function () {
+    checkIfFormSelected(2)
   });
 
 });
